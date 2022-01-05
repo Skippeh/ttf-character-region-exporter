@@ -42,3 +42,5 @@ Cargo.lock
 !.vscode/*.code-snippets
 
 # End of vscode ignores
+
+output.xml
