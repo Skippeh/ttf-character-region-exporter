@@ -1,13 +1,9 @@
-use std::path::Path;
-
 use anyhow::Context;
-use serde::Serialize;
+use std::path::Path;
 use ttf_parser::PlatformId;
 
 mod xml;
 
-#[derive(Debug, Serialize, Clone)]
-#[serde(rename_all = "PascalCase")]
 pub struct CharacterRange {
     start: u32,
     end: u32,
@@ -21,15 +17,8 @@ fn main() -> anyhow::Result<(), anyhow::Error> {
         return Ok(());
     }
 
-    let font_data = match std::fs::read(&args[1]) {
-        Ok(f) => f,
-        Err(e) => anyhow::bail!(e),
-    };
-
-    let face = match ttf_parser::Face::from_slice(&font_data, 0) {
-        Ok(f) => f,
-        Err(e) => anyhow::bail!(e),
-    };
+    let font_bytes = std::fs::read(&args[1])?;
+    let face = ttf_parser::Face::from_slice(&font_bytes, 0)?;
 
     println!("Glyphs in font: {}", face.number_of_glyphs());
 
